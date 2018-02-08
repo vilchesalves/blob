@@ -11,10 +11,9 @@
 |
 */
 
-use MongoDB\Client as Mongo;
 
 Route::get('mongo', function(Request $request) {
-    $collection = (new Mongo)->mydatabase->mycollection;
+    $collection = Mongo::get()->mydatabase->mycollection;
     return $collection->find()->toArray();
 });
 
