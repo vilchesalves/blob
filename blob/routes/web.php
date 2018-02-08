@@ -12,6 +12,7 @@
 */
 
 use Illuminate\Http\Request;
+use MongoDB\BSON\ObjectID;
 
 Route::get('mongo', function(Request $request) {
     $collection = Mongo::get()->homestead->posts;
@@ -30,7 +31,23 @@ Route::get('post/create', function () {
     return view('post_create');
 })->name('post.create');
 
-Route::post('post/store', function (Request $request) {
+Route::get('post/{id}/destroy', function ($id) {
+    return view('post_destroy', [
+        'id' => $id,
+    ]);
+})->name('post.confirm_destroy');
+
+Route::delete('post/{id}/destroy', function ($id) {
+    $collection = Mongo::get()->homestead->posts;
+
+    $collection->deleteOne([
+        '_id' => new ObjectID($id),
+    ]);
+
+    return redirect()->route('dashboard');
+})->name('post.destroy');
+
+Route::post('post', function (Request $request) {
     $collection = Mongo::get()->homestead->posts;
 
     $insertOneResult = $collection->insertOne([
