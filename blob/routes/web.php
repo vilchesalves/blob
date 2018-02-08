@@ -19,6 +19,9 @@ Route::get('mongo', function(Request $request) {
 });
 
 Route::get('/', function () {
-    return view('bootstrap');
-});
+    return view('index');
+})->name('index');
 
+Route::get('/input', function () {
+    return view('input');
+});
