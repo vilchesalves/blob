@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="blog-post">
-    <form method="POST" action="/post/store">
+    <form method="POST" action="{{ route('post.store') }}">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="title">Post title</label>

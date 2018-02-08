@@ -57,12 +57,19 @@ Route::post('post', function (Request $request) {
 
     $id = $insertOneResult->getInsertedId();
 
-    return redirect()->route('post.view', [
+    return redirect()->route('post.show', [
         'id' => $id,
     ]);
-});
+})->name('post.store');
 
 Route::get('post/{id}', function ($id) {
-    dd($id);
-    return $id;
-})->name('post.view');
+    $collection = Mongo::get()->homestead->posts;
+
+    $post = $collection->findOne([
+        '_id' => new ObjectID($id),
+    ]);
+
+    return view('post_show', [
+        'post' => $post->bsonSerialize(),
+    ]);
+})->name('post.show');
