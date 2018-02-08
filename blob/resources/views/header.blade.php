@@ -1,7 +1,7 @@
 <nav class="nav blog-nav">
 
     <a class="nav-link active" href="{{ route('index') }}">Home</a>
-    <a class="nav-link" href="#">Press</a>
+    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
 
     @if (Route::has('login'))
         <div class="top-right links">

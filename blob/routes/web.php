@@ -22,6 +22,14 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::get('/input', function () {
-    return view('input');
+Route::get('dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+Route::get('post/new', function () {
+    return view('post_new');
+})->name('post.new');
+
+Route::post('post/new', function () {
+    return view('post_new');
 });
