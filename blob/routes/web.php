@@ -11,9 +11,10 @@
 |
 */
 
+use Illuminate\Http\Request;
 
 Route::get('mongo', function(Request $request) {
-    $collection = Mongo::get()->mydatabase->mycollection;
+    $collection = Mongo::get()->homestead->posts;
     return $collection->find()->toArray();
 });
 
@@ -25,10 +26,26 @@ Route::get('dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('post/new', function () {
-    return view('post_new');
-})->name('post.new');
+Route::get('post/create', function () {
+    return view('post_create');
+})->name('post.create');
 
-Route::post('post/new', function () {
-    return view('post_new');
+Route::post('post/store', function (Request $request) {
+    $collection = Mongo::get()->homestead->posts;
+
+    $insertOneResult = $collection->insertOne([
+        'title' => $request->title,
+        'body' => $request->body,
+    ]);
+
+    $id = $insertOneResult->getInsertedId();
+
+    return redirect()->route('post.view', [
+        'id' => $id,
+    ]);
 });
+
+Route::get('post/{id}', function ($id) {
+    dd($id);
+    return $id;
+})->name('post.view');

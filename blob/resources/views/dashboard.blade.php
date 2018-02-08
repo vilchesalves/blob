@@ -3,7 +3,7 @@
 @section('content')
 <div class="blog-post">
     <ul>
-        <li><a href="{{ route('post.new') }}">New post</a></li>
+        <li><a href="{{ route('post.create') }}">Create new post</a></li>
     </ul>
 </div>
 @endsection
