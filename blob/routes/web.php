@@ -25,44 +25,48 @@ Route::get('/', function () {
     ]);
 })->name('index');
 
-Route::get('dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth'])->group(function () {
 
-Route::get('post/create', function () {
-    return view('post_create');
-})->name('post.create');
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::get('post/{id}/destroy', function ($id) {
-    return view('post_destroy', [
-        'id' => $id,
-    ]);
-})->name('post.confirm_destroy');
+    Route::get('post/create', function () {
+        return view('post_create');
+    })->name('post.create');
 
-Route::delete('post/{id}/destroy', function ($id) {
-    $collection = Mongo::get()->homestead->posts;
+    Route::get('post/{id}/destroy', function ($id) {
+        return view('post_destroy', [
+            'id' => $id,
+        ]);
+    })->name('post.confirm_destroy');
+    
+    Route::delete('post/{id}/destroy', function ($id) {
+        $collection = Mongo::get()->homestead->posts;
+    
+        $collection->deleteOne([
+            '_id' => new ObjectID($id),
+        ]);
+    
+        return redirect()->route('dashboard');
+    })->name('post.destroy');
+    
+    Route::post('post', function (Request $request) {
+        $collection = Mongo::get()->homestead->posts;
+    
+        $insertOneResult = $collection->insertOne([
+            'title' => $request->title,
+            'body' => $request->body,
+        ]);
+    
+        $id = $insertOneResult->getInsertedId();
+    
+        return redirect()->route('post.show', [
+            'id' => $id,
+        ]);
+    })->name('post.store');
 
-    $collection->deleteOne([
-        '_id' => new ObjectID($id),
-    ]);
-
-    return redirect()->route('dashboard');
-})->name('post.destroy');
-
-Route::post('post', function (Request $request) {
-    $collection = Mongo::get()->homestead->posts;
-
-    $insertOneResult = $collection->insertOne([
-        'title' => $request->title,
-        'body' => $request->body,
-    ]);
-
-    $id = $insertOneResult->getInsertedId();
-
-    return redirect()->route('post.show', [
-        'id' => $id,
-    ]);
-})->name('post.store');
+});
 
 Route::get('post/{id}', function ($id) {
     $collection = Mongo::get()->homestead->posts;
