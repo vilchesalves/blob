@@ -69,6 +69,10 @@ Route::get('post/{id}', function ($id) {
         '_id' => new ObjectID($id),
     ]);
 
+    if ($post === null) {
+        abort(404);
+    }
+
     return view('post_show', [
         'post' => $post->bsonSerialize(),
     ]);
