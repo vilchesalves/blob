@@ -14,6 +14,9 @@
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectID;
 
+Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout');
+
 Route::get('/', function () {
     $posts = Mongo::get()->homestead->posts->find()->toArray();
 
