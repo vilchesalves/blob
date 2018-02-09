@@ -14,13 +14,12 @@
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectID;
 
-Route::get('mongo', function(Request $request) {
-    $collection = Mongo::get()->homestead->posts;
-    return $collection->find()->toArray();
-});
-
 Route::get('/', function () {
-    return view('index');
+    $posts = Mongo::get()->homestead->posts->find()->toArray();
+
+    return view('index', [
+        'posts' => $posts,
+    ]);
 })->name('index');
 
 Route::get('dashboard', function () {
@@ -74,6 +73,6 @@ Route::get('post/{id}', function ($id) {
     }
 
     return view('post_show', [
-        'post' => $post->bsonSerialize(),
+        'post' => $post,
     ]);
 })->name('post.show');
