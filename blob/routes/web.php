@@ -34,6 +34,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('post/create', function () {
         return view('post_create');
     })->name('post.create');
+    
+    Route::post('post', function (Request $request) {
+        $collection = Mongo::get()->homestead->posts;
+    
+        $insertOneResult = $collection->insertOne([
+            'title' => $request->title,
+            'body' => $request->body,
+        ]);
+    
+        $id = $insertOneResult->getInsertedId();
+    
+        return redirect()->route('post.show', [
+            'id' => $id,
+        ]);
+    })->name('post.store');
 
     Route::get('post/{id}/destroy', function ($id) {
         return view('post_destroy', [
@@ -50,21 +65,6 @@ Route::middleware(['auth'])->group(function () {
     
         return redirect()->route('dashboard');
     })->name('post.destroy');
-    
-    Route::post('post', function (Request $request) {
-        $collection = Mongo::get()->homestead->posts;
-    
-        $insertOneResult = $collection->insertOne([
-            'title' => $request->title,
-            'body' => $request->body,
-        ]);
-    
-        $id = $insertOneResult->getInsertedId();
-    
-        return redirect()->route('post.show', [
-            'id' => $id,
-        ]);
-    })->name('post.store');
 
 });
 
