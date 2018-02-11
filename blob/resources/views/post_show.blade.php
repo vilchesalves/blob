@@ -15,6 +15,7 @@
     <div class="admin">
         <ul>
             <li><a href="{{ route('post.edit', [ 'id' => $post->_id]) }}">edit post</a></li>
+            <li><a href="{{ route('post.destroy', [ 'id' => $post->_id]) }}">remove post</a></li>
         </ul>
     </div>
     @endauth

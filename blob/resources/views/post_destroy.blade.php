@@ -6,7 +6,7 @@
         {{ csrf_field() }}
         {{ method_field('DELETE') }}
 
-        <p>Confirm deletion of id {{ $id }}?</p>
+        <p>Confirm deletion of post {{ $id }}?</p>
 
         <button type="submit" class="btn btn-primary mb-2">Delete</button>
     </form>
