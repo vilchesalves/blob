@@ -13,7 +13,7 @@
         {{ $post->body }}
     </div>
 </div>
-@endforeach;
+@endforeach
 
 <nav class="blog-pagination">
     <a class="btn btn-outline-primary" href="#">Older</a>
