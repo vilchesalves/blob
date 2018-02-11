@@ -13,6 +13,7 @@
 
     @auth
     <div class="admin">
+        <h4>Admin</h4>
         <ul>
             <li><a href="{{ route('post.edit', [ 'id' => $post->_id]) }}">edit post</a></li>
             <li><a href="{{ route('post.destroy', [ 'id' => $post->_id]) }}">remove post</a></li>
