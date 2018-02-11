@@ -1,6 +1,6 @@
 <nav class="nav blog-nav">
 
-    <a class="nav-link active" href="{{ route('index') }}">Home</a>
+    <a class="nav-link" href="{{ route('index') }}">Home</a>
 
     @auth
         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
