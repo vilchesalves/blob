@@ -50,11 +50,47 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('post.store');
 
+    Route::get('post/{id}/edit', function ($id) {
+        $collection = Mongo::get()->homestead->posts;
+    
+        $post = $collection->findOne([
+            '_id' => new ObjectID($id),
+        ]);
+    
+        if ($post === null) {
+            abort(404);
+        }
+    
+        return view('post_edit', [
+            'post' => $post,
+        ]);
+    })->name('post.edit');
+
+    Route::put('post/{id}/edit', function ($id, Request $request) {
+        $collection = Mongo::get()->homestead->posts;
+
+        $updateResult = $collection->updateOne(
+            [
+                '_id' => new ObjectID($id),
+            ],
+            [
+                '$set' => [
+                    'title' => $request->title,
+                    'body' => $request->body,
+                ]
+            ]
+        );
+        
+        return redirect()->route('post.show', [
+            'id' => $id,
+        ]);
+    })->name('post.edit');
+
     Route::get('post/{id}/destroy', function ($id) {
         return view('post_destroy', [
             'id' => $id,
         ]);
-    })->name('post.confirm_destroy');
+    })->name('post.destroy');
     
     Route::delete('post/{id}/destroy', function ($id) {
         $collection = Mongo::get()->homestead->posts;

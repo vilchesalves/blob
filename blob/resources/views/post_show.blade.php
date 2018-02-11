@@ -10,5 +10,13 @@
     <div class="body">
         {{ $post->body }}
     </div>
+
+    @auth
+    <div class="admin">
+        <ul>
+            <li><a href="{{ route('post.edit', [ 'id' => $post->_id]) }}">edit post</a></li>
+        </ul>
+    </div>
+    @endauth
 </div>
 @endsection
