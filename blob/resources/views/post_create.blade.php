@@ -9,6 +9,17 @@
             <input type="text" class="form-control" id="title" name="title">
         </div>
         <div class="form-group">
+            <label for="datetime">Date</label>
+            <div class="form-inline">
+                <input id="date" class="form-control mr-sm-2" type="date" id="date" name="date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                <input id="time" class="form-control" type="time" id="time" name="time" value="{{ \Carbon\Carbon::now()->format('H:i:s') }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="author">Author</label>
+            <input type="text" class="form-control" id="author" name="author">
+        </div>
+        <div class="form-group">
             <label for="body">Post body</label>
             <textarea class="form-control" id="body" name="body" rows="3"></textarea>
         </div>

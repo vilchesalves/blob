@@ -6,8 +6,8 @@
 <div class="blog-post">
     <h2 class="blog-post-title">{{ $post->title }}</h2>
     <p class="blog-post-meta">
-        <a href="{{ route('post.show', [ 'id' => $post->_id ]) }}">January 1, 2014 by</a>
-        Author
+    <a href="{{ route('post.show', [ 'id' => $post->_id ]) }}">{{ $post->date->format('F j, Y') }} by</a>
+        {{ $post->author }}
     </p>
     <div class="body">
         {{ $post->body }}

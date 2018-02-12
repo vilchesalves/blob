@@ -11,6 +11,7 @@
 |
 */
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use MongoDB\BSON\ObjectID;
 
@@ -19,6 +20,11 @@ Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::get('/', function () {
     $posts = Mongo::get()->homestead->posts->find()->toArray();
+
+    foreach ($posts as $post) {
+        $post->date = Carbon::instance($post->date->toDateTime())
+            ->setTimeZone('Pacific/Auckland');
+    }
 
     return view('index', [
         'posts' => $posts,
@@ -37,10 +43,18 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('post', function (Request $request) {
         $collection = Mongo::get()->homestead->posts;
+
+        $date = new DateTime(
+            $request->date . ' ' . $request->time,
+            new DateTimeZone('Pacific/Auckland')
+        );
     
         $insertOneResult = $collection->insertOne([
             'title' => $request->title,
+            'slug' => str_slug($request->title),
             'body' => $request->body,
+            'date' => new MongoDB\BSON\UTCDateTime($date->getTimestamp() * 1000),
+            'author' => $request->author,
         ]);
     
         $id = $insertOneResult->getInsertedId();
@@ -60,6 +74,9 @@ Route::middleware(['auth'])->group(function () {
         if ($post === null) {
             abort(404);
         }
+
+        $post->date = Carbon::instance($post->date->toDateTime())
+            ->setTimeZone('Pacific/Auckland');
     
         return view('post_edit', [
             'post' => $post,
@@ -69,6 +86,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('post/{id}/edit', function ($id, Request $request) {
         $collection = Mongo::get()->homestead->posts;
 
+        $date = new DateTime(
+            $request->date . ' ' . $request->time,
+            new DateTimeZone('Pacific/Auckland')
+        );
+
         $updateResult = $collection->updateOne(
             [
                 '_id' => new ObjectID($id),
@@ -76,7 +98,10 @@ Route::middleware(['auth'])->group(function () {
             [
                 '$set' => [
                     'title' => $request->title,
+                    'slug' => str_slug($request->title),
                     'body' => $request->body,
+                    'date' => new MongoDB\BSON\UTCDateTime($date->getTimestamp() * 1000),
+                    'author' => $request->author,
                 ]
             ]
         );
@@ -115,6 +140,9 @@ Route::get('post/{id}', function ($id) {
         abort(404);
     }
 
+    $post->date = Carbon::instance($post->date->toDateTime())
+        ->setTimeZone('Pacific/Auckland');
+        
     return view('post_show', [
         'post' => $post,
     ]);
