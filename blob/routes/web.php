@@ -43,3 +43,4 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('post/{id}', 'PostsController@show')->name('post.show');
+Route::get('archive/{year}/{month}', 'PostsController@archive')->name('post.archive');
