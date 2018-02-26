@@ -19,6 +19,14 @@ class PostsController extends Controller
     }
 
     public function store (Request $request) {
+
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'date' => 'required|date',
+            'author' => 'required',
+        ]);
+
         $collection = Mongo::get()->homestead->posts;
 
         $date = new DateTime(

@@ -5,6 +5,15 @@
     <form method="POST" action="{{ route('post.edit', [ 'id' => $post->_id]) }}">
         {{ csrf_field() }}
         {{ method_field('PUT') }}
+        
+        @if (count($errors))
+        <div class="alert alert-danger" role="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+        @endif
+        
         <div class="form-group">
             <label for="title">Post title</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ $post->title }}">
