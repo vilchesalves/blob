@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         
         App\Mongo\ServiceProvider::class,
+        App\Providers\ViewComposerServiceProvider::class,
 
     ],
 
